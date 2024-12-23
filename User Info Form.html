@@ -3,94 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إدخال البيانات</title>
+    <title>Form Input</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
         }
 
-        .form-container {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        form {
+            margin-bottom: 20px;
         }
 
-        .form-container input,
-        .form-container select,
-        .form-container button {
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, select, textarea {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 4px;
+            padding: 8px;
+            margin-bottom: 10px;
             border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        textarea {
+            height: 150px;
+            resize: vertical;
         }
 
         button {
+            padding: 10px 15px;
             background-color: #007BFF;
             color: white;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
         }
 
-        button:hover {
-            background-color: #0056b3;
-        }
+            button:hover {
+                background-color: #0056b3;
+            }
     </style>
 </head>
 <body>
     <h1>إدخال البيانات</h1>
-    <div class="form-container">
-        <form id="dataForm">
-            <label for="name">الاسم:</label>
-            <input type="text" id="name" required>
+    <form id="userForm">
+        <label for="name">الاسم:</label>
+        <input type="text" id="name" name="name" required>
 
-            <label for="gender">الجنس:</label>
-            <select id="gender" required>
-                <option value="ذكر">ذكر</option>
-                <option value="أنثى">أنثى</option>
-            </select>
+        <label for="gender">الجنس:</label>
+        <select id="gender" name="gender" required>
+            <option value="">اختر</option>
+            <option value="ذكر">ذكر</option>
+            <option value="أنثى">أنثى</option>
+            <option value="منوفي">منوفي</option>
+            <option value="افريقي">افريقي</option>
+            <option value="اسود"> اسود</option>
+            <option value="chinease cat">chinease cat</option>
+            <option value="💀💀💀">اخرى💀💀💀</option>
+        </select>
 
-            <label for="skin">البشرة:</label>
-            <input type="text" id="skin" required>
+        <label for="skin">لون البشرة:</label>
+        <select id="skin" name="skin" required>
+            <option value="">اختر</option>
+            <option value="ابيض">ابيض</option>
+            <option value="اسود">اسود</option>
+            <option value="اسود جدا">اسود جدا</option>
+            <option value="بينك">بينك</option>
+            <option value="قوقازي">قوقازي</option>
+            <option value="لون قلبك">لون قلبك</option>
+            <option value="اخرى💀💀">اخرى💀💀</option>
+        </select>
 
-            <label for="age">العمر:</label>
-            <input type="number" id="age" required>
+        <label for="age">العمر:</label>
+        <input type="number" id="age" name="age" required>
 
-            <label for="extraText">نص إضافي:</label>
-            <textarea id="extraText" rows="4"></textarea>
+        <label for="customText">نص إضافي:</label>
+        <textarea id="customText" name="customText"></textarea>
 
-            <button type="submit">تخزين البيانات</button>
-        </form>
-    </div>
+        <button type="button" onclick="storeData()">حفظ البيانات</button>
+    </form>
 
     <script>
-        document.getElementById('dataForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
+        function storeData() {
+            // الحصول على القيم من النموذج
             const name = document.getElementById('name').value;
             const gender = document.getElementById('gender').value;
             const skin = document.getElementById('skin').value;
             const age = document.getElementById('age').value;
-            const extraText = document.getElementById('extraText').value;
+            const customText = document.getElementById('customText').value;
 
+            // التحقق من أن الحقول مطلوبة
+            if (!name || !gender || !skin || !age) {
+                alert('يرجى ملء جميع الحقول المطلوبة.');
+                return;
+            }
+
+            // إنشاء كائن البيانات
             const userData = {
-                "الاسم": name,
-                "الجنس": gender,
-                "البشرة": skin,
-                "العمر": age,
-                "نص_إضافي": extraText
+                الاسم: name,
+                الجنس: gender,
+                البشرة: skin,
+                العمر: age,
+                نص_إضافي: customText
             };
 
-            const key = name + "_" + Date.now(); // استخدام الاسم مع الوقت لضمان تمييز البيانات
+            // إرسال البيانات إلى الصفحة الأخرى باستخدام LocalStorage
+            localStorage.setItem(name, JSON.stringify(userData));
 
-            // تخزين البيانات في LocalStorage
-            localStorage.setItem(key, JSON.stringify(userData));
+            // إعلام المستخدم بأنه تم حفظ البيانات
+            alert('تم حفظ البيانات بنجاح!');
 
-            // تنبيه لإعلام المستخدم
-            alert('تم تخزين البيانات بنجاح!');
-        });
+            // مسح النموذج
+            document.getElementById('userForm').reset();
+        }
     </script>
 </body>
 </html>
