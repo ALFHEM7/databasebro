@@ -1,28 +1,117 @@
-document.getElementById('dataForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدخال البيانات</title>
+    <style>
+        /* تنسيق للجوالات فقط */
+        @media (max-width: 768px) {
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                display: block;
+                font-size: 16px;
+            }
 
-    const name = document.getElementById('name').value;
-    const gender = document.getElementById('gender').value;
-    const skin = document.getElementById('skin').value;
-    const age = document.getElementById('age').value;
-    const extraText = document.getElementById('extraText').value;
+            .container {
+                margin: 20px;
+            }
 
-    const userData = {
-        "الاسم": name,
-        "الجنس": gender,
-        "البشرة": skin,
-        "العمر": age,
-        "نص_إضافي": extraText
-    };
+            input, textarea {
+                width: 100%;
+                padding: 8px;
+                margin: 10px 0;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
 
-    const key = name + "_" + Date.now(); // استخدام الاسم مع الوقت لضمان تمييز البيانات
+            button {
+                padding: 10px;
+                background-color: #007BFF;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
 
-    // تخزين البيانات في LocalStorage
-    localStorage.setItem(key, JSON.stringify(userData));
+            button:hover {
+                background-color: #0056b3;
+            }
 
-    // التحقق من البيانات المخزنة عبر Console
-    console.log("Data stored:", userData);
-    
-    // تنبيه لإعلام المستخدم
-    alert('تم تخزين البيانات بنجاح!');
-});
+            @media (min-width: 769px) {
+                body {
+                    display: none;
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>إدخال البيانات</h1>
+
+        <!-- نموذج الإدخال -->
+        <form id="inputForm">
+            <div>
+                <label for="name">الاسم:</label>
+                <input type="text" id="name" required><br><br>
+            </div>
+            <div>
+                <label for="gender">الجنس:</label>
+                <input type="text" id="gender" required><br><br>
+            </div>
+            <div>
+                <label for="skin">البشرة:</label>
+                <input type="text" id="skin" required><br><br>
+            </div>
+            <div>
+                <label for="age">العمر:</label>
+                <input type="number" id="age" required><br><br>
+            </div>
+            <div>
+                <label for="extraText">نص إضافي:</label>
+                <textarea id="extraText" rows="4" cols="50"></textarea><br><br>
+            </div>
+            <button type="submit">حفظ البيانات</button>
+        </form>
+
+        <script>
+            // دالة لحفظ البيانات في localStorage
+            function saveData() {
+                const name = document.getElementById('name').value;
+                const gender = document.getElementById('gender').value;
+                const skin = document.getElementById('skin').value;
+                const age = document.getElementById('age').value;
+                const extraText = document.getElementById('extraText').value;
+
+                // تحقق إذا كانت جميع الحقول تم تعبئتها
+                if (name && gender && skin && age) {
+                    const data = {
+                        "الاسم": name,
+                        "الجنس": gender,
+                        "البشرة": skin,
+                        "العمر": age,
+                        "نص_إضافي": extraText
+                    };
+
+                    // حفظ البيانات في LocalStorage
+                    localStorage.setItem(name, JSON.stringify(data));
+                    alert("تم حفظ البيانات بنجاح");
+                    window.location.href = "display.html"; // إعادة التوجيه إلى صفحة العرض
+                } else {
+                    alert("الرجاء تعبئة جميع الحقول.");
+                }
+            }
+
+            // التعامل مع ارسال النموذج
+            document.getElementById('inputForm').addEventListener('submit', function(event) {
+                event.preventDefault(); // منع إعادة تحميل الصفحة
+                saveData();
+            });
+        </script>
+    </div>
+</body>
+</html>
